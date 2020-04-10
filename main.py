@@ -12,7 +12,7 @@ if __name__ == "__main__":
     # Example CMD: python3 main.py kmv 1000000 900000 500000 0.18 0.12
 
     # Run a monte carlo simulation (mcs) with GBM model to predict future asset path
-    # Example CMD: python3 main.py mcs gbm 1000000 900000 500000 0.18 0.12
+    # Example CMD: python3 main.py mcs gbm 1000 200 0.2 0.18 365 250
 
     namespace = "rqmp"
 
@@ -96,9 +96,7 @@ if __name__ == "__main__":
                 args.num_trading_days,
             ],
         )
-        import pdb
 
-        pdb.set_trace
         pod_params = dict(
             name=f"mrm-{uuid.uuid4()}",
             restart_policy="Never",
