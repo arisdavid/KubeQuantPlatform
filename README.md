@@ -57,3 +57,8 @@ Monte Carlo Simulation of GBM Model
 ```
 python3 main.py mcs gbm 1000 200 0.2 0.18 365 250
 ```
+
+## Screenshots
+![Image of K9s](https://imgur.com/0vp4nBV)
+
+
