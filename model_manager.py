@@ -8,7 +8,6 @@ logging.basicConfig(level=logging.INFO)
 
 
 class ModelManager:
-
     _api_version = "batch/v1"
 
     def __init__(self, namespace, container_params, pod_params, job_params):
@@ -87,8 +86,29 @@ class ModelManager:
         self.batch_api.create_namespaced_job(self.namespace, self.create_job())
         logging.info(f"Launched pod.")
 
-    def delete_job(self):
-        pass
+    def delete_old_jobs(self):
 
-    def delete_pod(self):
+        """ Delete old jobs """
+        jobs = self.batch_api.list_namespaced_job(namespace=self.namespace)
+
+        for job in jobs.items:
+            if job.status.succeeded:
+                self.batch_api.delete_namespaced_job(
+                    namespace=self.namespace, name=job.metadata.name,
+                )
+                logging.info(f"Deleted old job {job.metadata.name}")
+
+    def delete_old_pods(self):
         pass
+        """ Delete pods that succeeded previously """
+        pods = self.core_api.list_namespaced_pod(
+            namespace=self.namespace,
+            label_selector=f"name={self.pod_params['labels']['name']}",
+        )
+
+        for pod in pods.items:
+            if pod.status.phase == "Succeeded":
+                self.core_api.delete_namespaced_pod(
+                    name=pod.metadata.name, namespace=self.namespace
+                )
+                logging.info(f"Deleted old pod {pod.metadata.name}")
