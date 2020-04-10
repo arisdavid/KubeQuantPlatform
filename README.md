@@ -47,7 +47,7 @@ docker build -t credit-models:latest .
 docker build -t market-risk-models:latest .
 ```
 
-### Execute a Model
+### How to orchestrate a model
 KMV
 ```
 python3 main.py kmv 1000000 900000 500000 0.18 0.12
