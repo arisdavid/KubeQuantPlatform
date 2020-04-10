@@ -47,7 +47,7 @@ class ModelManager:
 
         # TODO: programmtically call the right model
         container.command = ["python3", "-u", "/main.py"]
-        container.args = self.container_params["args"]
+        container.args = [str(args) for args in self.container_params["args"]]
 
         container.image = self.container_params["image"]
 
