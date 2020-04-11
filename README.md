@@ -1,11 +1,11 @@
 ## Risk Quant Model Platform
 
-### Introduction
+## Introduction
 Risk Quant Model Platform (RQMP) is an experimental model execution platform. 
 The platform is responsible for orchestrating containerised financial models inside the cluster. 
 At present, it's configured to run execute a model on a single ephemeral pod. 
 
-### Kubernetes Local Development
+## Kubernetes Local Development
 For local development and testing setup a Kubernetes cluster using minikube. 
 
 https://kubernetes.io/docs/setup/learning-environment/minikube/
@@ -33,7 +33,7 @@ eval $(minikube docker-env)
 
 Optional: for interacting with the cluster it would be handy to have k9s installed - https://github.com/derailed/k9s. It's an interactive UI tool for interacting with Kubernetes cluster.
 
-### Setup
+## Setup
 
 There are two sample models that can be executed on the platform - Geometric Brownian Motion and KMV.
 
@@ -49,7 +49,7 @@ docker build -t credit-models:latest .
 docker build -t market-risk-models:latest .
 ```
 
-### How to orchestrate the sample models
+## How to orchestrate the sample models
 
 Execute the command below from the RiskQuantModelPlatform root directory.
 
