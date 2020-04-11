@@ -3,7 +3,7 @@
 ## Introduction
 Risk Quant Model Platform (RQMP) is an experimental model execution platform. 
 The platform is responsible for orchestrating containerised financial models inside the cluster. 
-At present, it's configured to run execute a model on a single ephemeral pod. 
+At present, it's configured to orchestrate a model as a job on a single ephemeral pod. 
 
 ## Kubernetes Local Development
 For local development and testing setup a Kubernetes cluster using minikube. 
@@ -31,7 +31,9 @@ Ensure you're inside the Kubernetes environment as this is where the images will
 eval $(minikube docker-env)
 ```
 
-Optional: for interacting with the cluster it would be handy to have k9s installed - https://github.com/derailed/k9s. It's an interactive UI tool for interacting with Kubernetes cluster.
+## Optional 
+For interacting with the cluster it would be handy to have k9s installed - https://github.com/derailed/k9s. 
+It's an interactive UI tool for interacting with Kubernetes cluster.
 
 ## Setup
 
