@@ -63,6 +63,14 @@ python3 main.py kmv 1000000 900000 500000 0.18 0.12
 python3 main.py mcs gbm 1000 200 0.2 0.18 365 250
 ```
 
+#### Current Models
+| Arg | Model Name                | Model Category | Usage                              |
+|-----|---------------------------|----------------|------------------------------------|
+| gbm | Geometric Brownian Motion | Market Risk    | Forecasting equity prices          |
+| kmv | KMV Merton Model          | Credit Risk    | Forecasting Probability of Default |
+| mcs | Monte Carlo Simulation    | N/A            | Repeated random sampling           |
+
+
 ## Screenshots
 ![![Image of K9s]](https://i.imgur.com/0vp4nBV.gif)
 
