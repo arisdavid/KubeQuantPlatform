@@ -68,7 +68,7 @@ python3 main.py mcs gbm 1000 200 0.2 0.18 365 250
 |-----|---------------------------|----------------|------------------------------------|
 | gbm | Geometric Brownian Motion | Market Risk    | Forecasting equity prices          |
 | kmv | KMV Merton Model          | Credit Risk    | Forecasting Probability of Default |
-| mcs | Monte Carlo Simulation    | N/A            | Repeated random sampling           |
+| mcs | Monte Carlo Simulation    | Market Risk    | Repeated random sampling           |
 
 
 ## Screenshots
