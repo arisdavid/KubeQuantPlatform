@@ -23,13 +23,15 @@ class KubernetesParameters:
     _image_pull_policy = "Never"
     _restart_policy = "Never"
 
-    def __init__(self, model_name):
+    def __init__(self, model_name, bucket_name, file_name):
         self.model_name = model_name
+
+        args = [bucket_name, file_name]
 
         if model_name == "kmv":
             self.container_name = "credit-models"
             self.container_image = "credit-models:latest"
-            self.container_args = [1000000, 900000, 500000, 0.18, 0.12]
+            self.container_args = args
 
             self.pod_name = f"cm-{uuid.uuid4()}"
             self.pod_labels = dict(name="credit-models", type="pod")
@@ -40,7 +42,7 @@ class KubernetesParameters:
         else:
             self.container_name = "credit-models"
             self.container_image = "credit-models:latest"
-            self.container_args = [1000000, 900000, 500000, 0.18, 0.12]
+            self.container_args = args
 
             self.pod_name = f"cm-{uuid.uuid4()}"
             self.pod_labels = dict(name="credit-models", type="pod")
