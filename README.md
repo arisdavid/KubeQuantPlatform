@@ -53,7 +53,7 @@ docker build -t market-risk-models:latest .
 
 ## How to orchestrate the sample models
 
-Execute the command below from the RiskQuantModelPlatform root directory.
+Execute the command below from the RiskQuantModelPlatform's root directory.
 
 #### KMV Model
 ```
@@ -73,12 +73,22 @@ python3 main.py mcs gbm 1000 200 0.2 0.18 365 250
 | mcs | Monte Carlo Simulation    | Market Risk    | Repeated random sampling           |
 
 
+## Scenario 1: AWS S3 File Upload
+
+Spin up AWS Resources using Terraform
+```
+terraform apply
+```
+
+To Install
+```
+helm install --namespace=rqmp sqs-manager-chart ./sqs-manager-chart --values ./sqs-manager-chart/values.yaml
+```
+
+To uninstall
+```
+helm uninstall --namespace=rqmp sqs-manager-chart ./sqs-manager-chart
+```
+
 ## Screenshots
 ![![Image of K9s]](https://i.imgur.com/0vp4nBV.gif)
-
-## Scenario Use Case 2: AWS S3 File Drop
-
-```
-helm install --namespace=rqmp sqs-manager-chart ./sqs-manager-chart
-```
-
