@@ -31,7 +31,7 @@ class ModelManager:
             all_namespaces.append(ns.metadata.name)
 
         if self.namespace in all_namespaces:
-            logging.info("Namespace already exists. Will re-use.")
+            logging.info(f"Namespace {self.namespace} already exists. Reusing.")
         else:
             namespace_metadata = client.V1ObjectMeta(name=self.namespace)
             self.core_api.create_namespace(
@@ -51,7 +51,7 @@ class ModelManager:
 
         container.image = self.container_params["image"]
 
-        logging.info(f"Creating container with image {self.container_params['image']}")
+        logging.info(f"Created container with image {self.container_params['image']}")
 
         return container
 
@@ -79,12 +79,19 @@ class ModelManager:
             api_version=self._api_version,
         )
 
+        logging.info(f"Created job with name {self.job_params['name']}.")
+
         return job
 
     def launch_worker(self):
 
         self.batch_api.create_namespaced_job(self.namespace, self.create_job())
         logging.info(f"Launched pod.")
+
+    def get_job_status(self):
+
+        jobs = self.batch_api.list_namespaced_job(namespace=self.namespace)
+        return jobs.items[0].status.succeeded
 
     def delete_old_jobs(self):
 
@@ -96,10 +103,10 @@ class ModelManager:
                 self.batch_api.delete_namespaced_job(
                     namespace=self.namespace, name=job.metadata.name,
                 )
-                logging.info(f"Deleted old job {job.metadata.name}")
+                logging.info(f"Deleted job {job.metadata.name}")
 
     def delete_old_pods(self):
-        pass
+
         """ Delete pods that succeeded previously """
         pods = self.core_api.list_namespaced_pod(
             namespace=self.namespace,
@@ -111,4 +118,4 @@ class ModelManager:
                 self.core_api.delete_namespaced_pod(
                     name=pod.metadata.name, namespace=self.namespace
                 )
-                logging.info(f"Deleted old pod {pod.metadata.name}")
+                logging.info(f"Deleted pod {pod.metadata.name}")

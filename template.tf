@@ -5,8 +5,6 @@ provider "aws" {
   
 }
 
-
-
 /* SQS Message Queue with Policy */
 resource "aws_sqs_queue" "sqs_queue_ingest" {
   name = "s3-event-notification-queue"
@@ -30,10 +28,9 @@ POLICY
 }
 
 
-
 /* S3 Buckets */
 resource "aws_s3_bucket" "s3_bucket_ingest_gbm"{
-   bucket = "rqmp-ingest-gbm-data"
+   bucket = "rqmp-ingest-gbm"
    acl    = "private"
    tags = {
       Name = "Ingest-GBM-Bucket"
@@ -42,7 +39,7 @@ resource "aws_s3_bucket" "s3_bucket_ingest_gbm"{
   }
 
   resource "aws_s3_bucket" "s3_bucket_ingest_kmv"{
-   bucket = "rqmp-ingest-kmv-data"
+   bucket = "rqmp-ingest-kmv"
    acl    = "private"
 
    tags = {
@@ -60,10 +57,3 @@ resource "aws_s3_bucket_notification" "bucket_notification_gbm" {
     events        = ["s3:ObjectCreated:*"]
   }
 }
-
-
-
-
-
-
-
