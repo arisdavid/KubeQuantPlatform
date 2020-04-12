@@ -26,7 +26,8 @@ class KubernetesParameters:
     def __init__(self, model_name, bucket_name, file_name):
         self.model_name = model_name
 
-        args = [bucket_name, file_name]
+        # args = [bucket_name, file_name]
+        args = [1000000, 900000, 500000, 0.18, 0.12]
 
         if model_name == "kmv":
             self.container_name = "credit-models"
@@ -107,11 +108,11 @@ class SQSManager:
                 if "Records" in message_dict:
                     if "s3" in message_dict["Records"][0]:
                         bucket_name = message_dict["Records"][0]["s3"]["bucket"]["name"]
-                        # file_name = message_dict["Records"][0]["s3"]["object"]["key"]
+                        file_name = message_dict["Records"][0]["s3"]["object"]["key"]
 
                         model = bucket_name.split("-")[-1]
 
-                        param_obj = KubernetesParameters(model)
+                        param_obj = KubernetesParameters(model, bucket_name, file_name)
                         params = param_obj.make_parameters()
 
                         # Call Model Manager
@@ -122,7 +123,7 @@ class SQSManager:
                             params.get("job"),
                         )
 
-                        k8s_object.create_namespace()
+                        # k8s_object.create_namespace()
                         k8s_object.launch_worker()
 
                         job_status = None

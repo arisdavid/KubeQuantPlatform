@@ -2,7 +2,8 @@ import logging
 
 from kubernetes import client, config
 
-config.load_kube_config()
+# config.load_kube_config()
+config.load_incluster_config()
 
 logging.basicConfig(level=logging.INFO)
 

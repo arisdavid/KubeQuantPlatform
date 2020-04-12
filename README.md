@@ -76,4 +76,9 @@ python3 main.py mcs gbm 1000 200 0.2 0.18 365 250
 ## Screenshots
 ![![Image of K9s]](https://i.imgur.com/0vp4nBV.gif)
 
+## Scenario Use Case 2: AWS S3 File Drop
+
+```
+helm install --namespace=rqmp sqs-manager-chart ./sqs-manager-chart
+```
 

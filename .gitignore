@@ -107,9 +107,11 @@ dmypy.json
 # Pyre type checker
 .pyre/
 
+values.dev.yaml
 venv/
 *.idea
 .tfstate
 .terraform/
 terraform.tfstate.backup
+
 # End of https://www.gitignore.io/api/python

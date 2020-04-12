@@ -1,0 +1,14 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ .Values.configMap.name }}
+  labels:
+    {{- include "sqs-manager-chart.labels" . | nindent 4 }}
+data:
+  AWS_ACCESS_KEY_ID: {{ .Values.aws.accessKeyId }}
+  AWS_SECRET_ACCESS_KEY: {{ .Values.aws.secretAccessKey }}
+  AWS_DEFAULT_REGION: {{ .Values.aws.defaultRegion }}
+  INGEST_S3_BUCKET_GBM: {{ .Values.s3.gbmIngestBucketName }}
+  INGEST_S3_BUCKET_KMV: {{ .Values.s3.kmvIngestBucketName}}
+  NAMESPACE: {{ .Release.Namespace }}
+  QUEUE_NAME: {{ .Values.sqs.ingestQueueName }}
