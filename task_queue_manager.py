@@ -5,7 +5,7 @@ import uuid
 from collections import namedtuple
 
 import boto3
-from model_orchestrator import ModelOrchestrator
+from model_orchestrator.model_orchestrator import ModelOrchestrator
 
 logging.basicConfig(level=logging.INFO)
 
@@ -13,7 +13,7 @@ queue_name = "s3-event-notification-queue"
 region_name = "us-east-1"
 namespace = "rqmp"
 queue_wait_time = 10
-max_jobs = 5
+
 
 SQSStatus = namedtuple("QueueStatus", "messages_available messages_processed")
 
@@ -116,24 +116,24 @@ class SQSManager:
                         params = param_obj.make_parameters()
 
                         # Call Model Manager
-                        k8s_object = ModelOrchestrator(
+                        kube_object = ModelOrchestrator(
                             namespace,
                             params.get("container"),
                             params.get("pod"),
                             params.get("job"),
                         )
 
-                        # k8s_object.create_namespace()
-                        k8s_object.launch_worker()
+                        # kube_object.create_namespace()
+                        kube_object.launch_worker()
 
                         job_status = None
                         logging.info("Waiting for job to complete.")
                         while job_status is None:
-                            job_status = k8s_object.get_job_status()
+                            job_status = kube_object.get_job_status()
 
                         logging.info("Job complete.")
-                        k8s_object.delete_old_jobs()
-                        k8s_object.delete_old_pods()
+                        kube_object.delete_old_jobs()
+                        kube_object.delete_old_pods()
                         processed_messages += 1
 
                         self.queue.delete_messages(

@@ -2,7 +2,7 @@ import argparse
 import logging
 import uuid
 
-from model_orchestrator import ModelOrchestrator
+from model_orchestrator.model_orchestrator import ModelOrchestrator
 
 logging.basicConfig(level=logging.INFO)
 
@@ -69,16 +69,16 @@ if __name__ == "__main__":
             name=f"cm-{uuid.uuid4()}", labels=dict(name="credit-models", type="job")
         )
 
-        k8_object = ModelOrchestrator(
+        kube_object = ModelOrchestrator(
             namespace, container_params, pod_params, job_params
         )
 
         # Delete old jobs and pods
-        k8_object.delete_old_jobs()
-        k8_object.delete_old_pods()
+        kube_object.delete_old_jobs()
+        kube_object.delete_old_pods()
 
-        k8_object.create_namespace()
-        k8_object.launch_worker()
+        kube_object.create_namespace()
+        kube_object.launch_worker()
 
     elif args.subcommand == "mcs":
 
@@ -110,16 +110,16 @@ if __name__ == "__main__":
             labels=dict(name="market-risk-models", type="job"),
         )
 
-        k8_object = ModelOrchestrator(
+        kube_object = ModelOrchestrator(
             namespace, container_params, pod_params, job_params
         )
 
         # Delete old jobs and pods
-        k8_object.delete_old_jobs()
-        k8_object.delete_old_pods()
+        kube_object.delete_old_jobs()
+        kube_object.delete_old_pods()
 
-        k8_object.create_namespace()
-        k8_object.launch_worker()
+        kube_object.create_namespace()
+        kube_object.launch_worker()
 
     else:
 
