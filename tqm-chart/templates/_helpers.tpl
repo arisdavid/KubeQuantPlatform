@@ -2,7 +2,7 @@
 {{/*
 Expand the name of the chart.
 */}}
-{{- define "sqs-manager-chart.name" -}}
+{{- define "tqm-chart.name" -}}
 {{- default .Chart.Name .Values.nameOverride | trunc 63 | trimSuffix "-" -}}
 {{- end -}}
 
@@ -11,7 +11,7 @@ Create a default fully qualified app name.
 We truncate at 63 chars because some Kubernetes name fields are limited to this (by the DNS naming spec).
 If release name contains chart name it will be used as a full name.
 */}}
-{{- define "sqs-manager-chart.fullname" -}}
+{{- define "tqm-chart.fullname" -}}
 {{- if .Values.fullnameOverride -}}
 {{- .Values.fullnameOverride | trunc 63 | trimSuffix "-" -}}
 {{- else -}}
@@ -27,16 +27,16 @@ If release name contains chart name it will be used as a full name.
 {{/*
 Create chart name and version as used by the chart label.
 */}}
-{{- define "sqs-manager-chart.chart" -}}
+{{- define "tqm-chart.chart" -}}
 {{- printf "%s-%s" .Chart.Name .Chart.Version | replace "+" "_" | trunc 63 | trimSuffix "-" -}}
 {{- end -}}
 
 {{/*
 Common labels
 */}}
-{{- define "sqs-manager-chart.labels" -}}
-helm.sh/chart: {{ include "sqs-manager-chart.chart" . }}
-{{ include "sqs-manager-chart.selectorLabels" . }}
+{{- define "tqm-chart.labels" -}}
+helm.sh/chart: {{ include "tqm-chart.chart" . }}
+{{ include "tqm-chart.selectorLabels" . }}
 {{- if .Chart.AppVersion }}
 app.kubernetes.io/version: {{ .Chart.AppVersion | quote }}
 {{- end }}
@@ -46,17 +46,17 @@ app.kubernetes.io/managed-by: {{ .Release.Service }}
 {{/*
 Selector labels
 */}}
-{{- define "sqs-manager-chart.selectorLabels" -}}
-app.kubernetes.io/name: {{ include "sqs-manager-chart.name" . }}
+{{- define "tqm-chart.selectorLabels" -}}
+app.kubernetes.io/name: {{ include "tqm-chart.name" . }}
 app.kubernetes.io/instance: {{ .Release.Name }}
 {{- end -}}
 
 {{/*
 Create the name of the service account to use
 */}}
-{{- define "sqs-manager-chart.serviceAccountName" -}}
+{{- define "tqm-chart.serviceAccountName" -}}
 {{- if .Values.serviceAccount.create -}}
-    {{ default (include "sqs-manager-chart.fullname" .) .Values.serviceAccount.name }}
+    {{ default (include "tqm-chart.fullname" .) .Values.serviceAccount.name }}
 {{- else -}}
     {{ default "default" .Values.serviceAccount.name }}
 {{- end -}}

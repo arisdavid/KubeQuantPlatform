@@ -5,7 +5,7 @@ import uuid
 from collections import namedtuple
 
 import boto3
-from model_manager import ModelManager
+from model_orchestrator import ModelOrchestrator
 
 logging.basicConfig(level=logging.INFO)
 
@@ -116,7 +116,7 @@ class SQSManager:
                         params = param_obj.make_parameters()
 
                         # Call Model Manager
-                        k8s_object = ModelManager(
+                        k8s_object = ModelOrchestrator(
                             namespace,
                             params.get("container"),
                             params.get("pod"),

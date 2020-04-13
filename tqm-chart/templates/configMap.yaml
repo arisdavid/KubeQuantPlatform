@@ -3,7 +3,7 @@ kind: ConfigMap
 metadata:
   name: {{ .Values.configMap.name }}
   labels:
-    {{- include "sqs-manager-chart.labels" . | nindent 4 }}
+    {{- include "tqm-chart.labels" . | nindent 4 }}
 data:
   AWS_ACCESS_KEY_ID: {{ .Values.aws.accessKeyId }}
   AWS_SECRET_ACCESS_KEY: {{ .Values.aws.secretAccessKey }}

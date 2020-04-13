@@ -8,4 +8,4 @@ RUN pip3 install -r requirements.txt
 
 COPY . .
 
-CMD ["python3", "-u", "/sqs_manager.py"]
+CMD ["python3", "-u", "/task_queue_manager.py"]

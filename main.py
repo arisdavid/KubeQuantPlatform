@@ -2,7 +2,7 @@ import argparse
 import logging
 import uuid
 
-from model_manager import ModelManager
+from model_orchestrator import ModelOrchestrator
 
 logging.basicConfig(level=logging.INFO)
 
@@ -69,7 +69,9 @@ if __name__ == "__main__":
             name=f"cm-{uuid.uuid4()}", labels=dict(name="credit-models", type="job")
         )
 
-        k8_object = ModelManager(namespace, container_params, pod_params, job_params)
+        k8_object = ModelOrchestrator(
+            namespace, container_params, pod_params, job_params
+        )
 
         # Delete old jobs and pods
         k8_object.delete_old_jobs()
@@ -108,7 +110,9 @@ if __name__ == "__main__":
             labels=dict(name="market-risk-models", type="job"),
         )
 
-        k8_object = ModelManager(namespace, container_params, pod_params, job_params)
+        k8_object = ModelOrchestrator(
+            namespace, container_params, pod_params, job_params
+        )
 
         # Delete old jobs and pods
         k8_object.delete_old_jobs()

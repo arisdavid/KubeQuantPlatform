@@ -2,13 +2,33 @@ import logging
 
 from kubernetes import client, config
 
-# config.load_kube_config()
-config.load_incluster_config()
-
 logging.basicConfig(level=logging.INFO)
 
 
-class ModelManager:
+def load_kube_config():
+
+    """ Load the right """
+    try:
+
+        # Cluster config
+        config.load_incluster_config()
+
+    except config.config_exception.ConfigException:
+
+        try:
+            # Local config
+            config.load_kube_config()
+
+        except config.config_exception.ConfigException:
+
+            logging.exception("Could not configure kubernetes python client")
+
+
+load_kube_config()
+
+
+class ModelOrchestrator:
+
     _api_version = "batch/v1"
 
     def __init__(self, namespace, container_params, pod_params, job_params):

@@ -35,7 +35,11 @@ eval $(minikube docker-env)
 For interacting with the cluster it would be handy to have k9s installed - https://github.com/derailed/k9s. 
 It's an interactive UI tool for interacting with Kubernetes cluster.
 
-## Setup
+
+## Helm 
+Helm is a tool for managing Kubernetes charts. Charts are packages of pre-configured Kubernetes resources. To install Helm, refer to the Helm install guide and ensure that the helm binary is in the PATH of your shell.
+
+## Build docker images
 
 There are two sample models that can be executed on the platform - Geometric Brownian Motion and KMV.
 
@@ -51,9 +55,14 @@ docker build -t credit-models:latest .
 docker build -t market-risk-models:latest .
 ```
 
-## How to orchestrate the sample models
+Task Queue Manager (this repository)
+```
+docker build -t task-queue-manager:latest .
+```
 
-Execute the command below from the RiskQuantModelPlatform's root directory.
+## Scenario 1: Local execution
+
+Execute the command below from the RiskQuantModelPlatform root directory.
 
 #### KMV Model
 ```
@@ -61,19 +70,14 @@ python3 main.py kmv 1000000 900000 500000 0.18 0.12
 ```
 
 #### Monte Carlo Simulation of GBM Model
+
 ```
 python3 main.py mcs gbm 1000 200 0.2 0.18 365 250
 ```
 
-#### Current Models
-| Arg | Model Name                | Model Category | Usage                              |
-|-----|---------------------------|----------------|------------------------------------|
-| gbm | Geometric Brownian Motion | Market Risk    | Forecasting equity prices          |
-| kmv | KMV Merton Model          | Credit Risk    | Forecasting Probability of Default |
-| mcs | Monte Carlo Simulation    | Market Risk    | Repeated random sampling           |
 
 
-## Scenario 1: AWS S3 File Upload
+## Scenario 2: AWS S3 File Upload
 
 Spin up AWS Resources using Terraform
 ```
@@ -82,13 +86,16 @@ terraform apply
 
 To Install
 ```
-helm install --namespace=rqmp sqs-manager-chart ./sqs-manager-chart --values ./sqs-manager-chart/values.yaml
+helm install --namespace=rqmp tqm-chart ./tqm-chart --values ./tqm-chart/values.dev.yaml
 ```
 
 To uninstall
 ```
-helm uninstall --namespace=rqmp sqs-manager-chart ./sqs-manager-chart
+helm uninstall --namespace=rqmp tqm-chart ./tqm-chart
 ```
 
+Drop a file into one of the s3 buckets e.g. ```aws s3 cp <file> s3://bucket-name```
+
 ## Screenshots
+#### 1. Local Execution
 ![![Image of K9s]](https://i.imgur.com/0vp4nBV.gif)
