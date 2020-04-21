@@ -84,9 +84,9 @@ Spin up AWS Resources using Terraform
 terraform apply
 ```
 
-To Install
+To Install Locally
 ```
-helm install --namespace=rqmp tqm-chart ./tqm-chart --values ./tqm-chart/values.dev.yaml
+helm install --namespace=rqmp tqm-chart ./tqm-chart --values ./tqm-chart/env/dev/values.yaml
 ```
 
 To uninstall
