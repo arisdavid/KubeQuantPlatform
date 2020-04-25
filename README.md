@@ -8,12 +8,15 @@ The platform is responsible for for creating and orchestrating ephemeral pods wi
 
 ## Local Development
 
-#### Requirements
-* Docker
-* Kubernetes (K8s)
-* Minikube
-* Kubectl 
-* Python3.7
+#### Tooling Requirements
+
+* Docker - For building container image
+* Minikube - "Playground" Kubernetes cluster
+* Kubectl - CLI tool for controlling kubernetes cluster
+* Vault - Managing kubernetes secrets and policies
+* AWSCLI - CLI tool for interacting with AWS
+* Terraform - Spinning up cloud resources
+* TBC (GCP, Azure, ELK/EFD stack)
 
 
 #### Initial Setup
