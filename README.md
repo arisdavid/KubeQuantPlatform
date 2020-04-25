@@ -18,7 +18,6 @@ The platform is responsible for for creating and orchestrating ephemeral pods wi
 * Vault - Managing kubernetes secrets and policies
 * AWSCLI - CLI tool for interacting with AWS
 * Terraform - Spinning up cloud resources
-* TBC (GCP, Azure, ELK/EFD stack)
 
 
 #### Initial Setup
