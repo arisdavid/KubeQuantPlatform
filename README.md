@@ -1,5 +1,5 @@
 ## Risk Quant Model Platform
-![CircleCI](https://circleci.com/gh/arisdavid/RiskQuantModelPlatform/tree/master.svg?style=shield&circle-token=4497d0b6994553429ad830631fbde0e5762aab67)
+[![CircleCI](https://circleci.com/gh/arisdavid/RiskQuantModelPlatform/tree/master.svg?style=shield&circle-token=4497d0b6994553429ad830631fbde0e5762aab67)](https://circleci.com/gh/arisdavid/RiskQuantModelPlatform/tree/master)
 
 ## Introduction
 Risk Quant Model Platform (RQMP) is an experimental model execution platform. 
@@ -14,7 +14,9 @@ The platform is responsible for for creating and orchestrating ephemeral pods wi
 * Minikube
 * Kubectl 
 * Python3.7
-* AWS Cloud [WIP]
+* AWS [WIP]
+* GCP [WIP]
+* Azure [WIP]
 
 #### Initial Setup
 
