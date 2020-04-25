@@ -3,7 +3,7 @@
 
 ## Introduction
 Risk Quant Model Platform (RQMP) is an experimental model execution platform. 
-The platform is responsible for for creating and orchestrating ephemeral pods with containerised quantitative models inside the cluster. 
+The platform is responsible for for creating and orchestrating ephemeral pods with containerised quantitative models inside a Kubernetes cluster. 
  
 
 ## Local Development
@@ -67,13 +67,13 @@ eval $(minikube docker-env)
 
 Clone the the the repositories and build the corresponding Docker images inside the Kubernetes cluster:
 
-* Geometric Brownian Motion (GBM) - a model to forecast price paths given expected sigma and expected return. https://github.com/arisdavid/rqmp-credit-risk-models
+* Geometric Brownian Motion (GBM) - a model to forecast price paths given expected sigma and expected return. https://github.com/arisdavid/rqmp-market-risk-models
   
     ```
     docker build -t market-risk-models:latest .
     ```
     
-* KMV - a model to calculate the probability of a company defaulting. https://github.com/arisdavid/rqmp-market-risk-models
+* KMV - a model to calculate the probability of a company defaulting. https://github.com/arisdavid/rqmp-credit-risk-models
 
     ```
     docker build -t credit-models:latest .
@@ -95,7 +95,7 @@ python main.py kmv 1000000 900000 500000 0.18 0.12
 python main.py mcs gbm 1000 200 0.2 0.18 365 250
 ```
 
-## Cloud Development and Testing
+## Cloud Development and Testing (WIP)
 
 #### AWS Resources
 
