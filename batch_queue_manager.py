@@ -1,5 +1,6 @@
 import json
 import logging
+import os
 import time
 import uuid
 from collections import namedtuple
@@ -12,8 +13,9 @@ logging.basicConfig(level=logging.INFO)
 queue_name = "s3-event-notification-queue"
 region_name = "us-east-1"
 namespace = "rqmp"
-queue_wait_time = 10
+queue_wait_time = 20
 
+logging.info(os.environ)
 
 SQSStatus = namedtuple("QueueStatus", "messages_available messages_processed")
 

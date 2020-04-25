@@ -1,25 +1,23 @@
 replicaCount: 1
 
-aws:
-  accessKeyId: 
-  secretAccessKey: 
-  defaultRegion: us-east-1
-
 sqs:
   ingestQueueName: s3-event-notification-queue
-  queueWaitTime: 10
+  queueWaitTime: 15
 
 s3:
   gbmIngestBucketName: rqmp-ingest-gbm
   kmvIngestBucketName: rqmp-ingest-kmv
 
 
-taskQueueManagerImage:
-  repository: task-queue-manager
+batchQueueManagerImage:
+  repository: batch-queue-manager
   pullPolicy: Never
 
 configMap:
-  name: sqs-manager-config
+  name: bqm-config-map
+
+secret:
+  name: bqm-secret
 
 imagePullSecrets: []
 nameOverride: ""
