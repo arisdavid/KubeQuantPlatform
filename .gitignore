@@ -1,5 +1,6 @@
+charts/templates/secret-dev.yaml
 
-# Created by https://www.gitignore.io/api/python
+ Created by https://www.gitignore.io/api/python
 # Edit at https://www.gitignore.io/?templates=python
 
 ### Python ###

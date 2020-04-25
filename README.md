@@ -5,7 +5,7 @@
 Risk Quant Model Platform (RQMP) is an experimental model execution platform. 
 The platform is responsible for for creating and orchestrating ephemeral pods with containerised quantitative models inside the cluster. 
  
- 
+
 ## Local Development
 
 #### Requirements
@@ -14,9 +14,7 @@ The platform is responsible for for creating and orchestrating ephemeral pods wi
 * Minikube
 * Kubectl 
 * Python3.7
-* AWS [WIP]
-* GCP [WIP]
-* Azure [WIP]
+
 
 #### Initial Setup
 
@@ -97,10 +95,10 @@ python main.py kmv 1000000 900000 500000 0.18 0.12
 python main.py mcs gbm 1000 200 0.2 0.18 365 250
 ```
 
-
-## AWS Development [WIP]
+## Cloud Development and Testing
 
 #### AWS Resources
+
 Spin up AWS Resources through Terraform.
 
 ##### Terraform Plan
