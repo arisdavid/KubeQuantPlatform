@@ -2,7 +2,7 @@ replicaCount: 1
 
 sqs:
   ingestQueueName: s3-event-notification-queue
-  queueWaitTime: 15
+  queueWaitTime: 10
 
 s3:
   gbmIngestBucketName: rqmp-ingest-gbm
@@ -16,9 +16,6 @@ batchQueueManagerImage:
 configMap:
   name: bqm-config-map
 
-secret:
-  name: bqm-secret
-
 imagePullSecrets: []
 nameOverride: ""
 fullnameOverride: ""
@@ -29,11 +26,24 @@ role:
 roleBinding:
   name: sqs-manager-role
 
+podAnnotations:
+  vault.hashicorp.com/agent-inject: "true"
+  vault.hashicorp.com/agent-inject-secret-aws: "secret/aws"
+  vault.hashicorp.com/agent-inject-template-aws: |
+    {{- with secret "secret/aws" -}}
+      AWS_ACCESS_KEY_ID={{.Data.data.AWS_ACCESS_KEY_ID  }}
+      AWS_SECRET_ACCESS_KEY={{.Data.data.AWS_SECRET_ACCESS_KEY  }}
+      AWS_DEFAULT_REGION={{.Data.data.AWS_DEFAULT_REGION }}
+    {{- end }}
+  vault.hashicorp.com/role: "myapp"
+
+
 serviceAccount:
   # Specifies whether a service account should be created
   create: true
   # Annotations to add to the service account
   annotations: {}
+
   # The name of the service account to use.
   # If not set and create is true, a name is generated using the fullname template
   name: sqs-manager-service-account

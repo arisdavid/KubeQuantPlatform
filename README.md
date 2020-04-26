@@ -15,10 +15,9 @@ The platform is responsible for for creating and orchestrating ephemeral pods wi
 * Docker - For building container image
 * Minikube - "Playground" Kubernetes cluster
 * Kubectl - CLI tool for controlling kubernetes cluster
-* Vault - Managing kubernetes secrets and policies
+* Vault - Identity and secret management
 * AWSCLI - CLI tool for interacting with AWS
 * Terraform - Spinning up cloud resources
-* TBC (GCP, Azure, ELK/EFD stack)
 
 
 #### Initial Setup
@@ -102,11 +101,80 @@ python main.py mcs gbm 1000 200 0.2 0.18 365 250
 
 ## Cloud Development and Testing (WIP)
 
-#### AWS Resources
+#### Vault Configuration
+
+We are using vault to store secrets and inject them into the pods as when needed e.g. Cloud credential. 
+
+Clone Vault-Helm repository - https://github.com/hashicorp/vault-k8s
+
+Ensure the current context is set to namespace=<namespace_name> you're currently working on. 
+
+Install vault:
+```
+helm install vault ./vault-helm --set='server.dev.enabled=true   
+```
+
+`Optional` - Create a port forward 8200:8200. The UI becomes accessible at host:8200:
+
+```
+kubectl port-forward vault-0 8200:8200 
+```
+
+Access vault's shell (vault-0 is the pod's name):
+```
+kubectl exec -it vault-0 /bin/sh
+```
+
+Create a read policy applicable to secret:
+```
+cat <<EOF> /home/vault/app-policy.hcl
+path "secret*" {
+    capabilities = ["read"]
+}
+EOF
+```
+
+```
+vault policy write app /home/vault/app-policy.hcl
+```
+
+
+Configure the vault Kubernetes Auth Method:
+```
+vault auth enable kubernetes
+```
+
+Bind the policy to the application service account:
+
+```
+vault write auth/kubernetes/config \
+    token_reviewer_jwt="$(cat var/run/secrets/kubernetes.io/serviceaccount/token)" \
+    kubernetes_host=https://${KUBERNETES_PORT_443_TCP_ADDR}:443 \
+    kubernetes_ca_cert=@/var/run/secrets/kubernetes.io/serviceaccount/ca.crt
+```
+
+```
+vault write auth/kubernetes/role/myapp \
+    bound_service_account_names=<app_service_account> \
+    bound_service_account_namespaces=<namespace> \
+    policies=app \
+    ttl=1h
+ 
+```
+
+Create the AWS secrets: 
+```
+vault kv put secret/aws AWS_ACCESS_KEY_ID=<AWS_ACCESS_KEY_ID> \
+                        AWS_SECRET_ACCESS_KEY=<AWS_SECRET_ACCESS_KEY> \
+                        AWS_DEFAULT_REGION=<AWS_DEFAULT_REGION>
+```
+
+
+#### AWS Resources (TODO)
 
 Spin up AWS Resources through Terraform.
 
-##### Terraform Plan
+##### Terraform Plan 
 ##### Terraform Apply
 
 #### Helm 
