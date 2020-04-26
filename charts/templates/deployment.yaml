@@ -36,12 +36,14 @@ spec:
           envFrom:
            - configMapRef:
                 name: {{ .Values.configMap.name }}
-           - secretRef:
-                name: {{ .Values.secret.name}}
           readinessProbe:
-            httpGet:
-              path: /
-              port: http
+            exec:
+              command:
+                - stat
+                - /vault/secrets/aws
+            initialDelaySeconds: 5
+            periodSeconds: 5
+            failureThreshold: 3
           resources:
             {{- toYaml .Values.resources | nindent 12 }}
       {{- with .Values.nodeSelector }}

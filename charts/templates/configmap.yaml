@@ -8,4 +8,5 @@ data:
   INGEST_S3_BUCKET_GBM: {{ .Values.s3.gbmIngestBucketName }}
   INGEST_S3_BUCKET_KMV: {{ .Values.s3.kmvIngestBucketName}}
   NAMESPACE: {{ .Release.Namespace }}
-  QUEUE_NAME: {{ .Values.sqs.ingestQueueName }}
+  QUEUE_NAME: {{ .Values.sqs.ingestQueueName}}
+  QUEUE_WAIT_TIME: "{{ .Values.sqs.queueWaitTime }}"

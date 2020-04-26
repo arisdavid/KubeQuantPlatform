@@ -2,8 +2,10 @@ build:
 	docker build -t batch-queue-manager:latest .
 
 vault:
-    helm install vault https://github.com/hashicorp/vault-helm/archive/v0.4.0.tar.gz
+    helm install vault ./vault-helm -n rqmp --set='server.dev.enabled=true'
+    helm uninstall vault -n rqmp
     kubectl port-forward vault-0 8200:8200
+
 
 install:
 	$access_key=$(aws configure get default.aws_access_key_id)
@@ -12,4 +14,3 @@ install:
 
 uninstall:
 	helm uninstall --namespace=rqmp batch-queue-manager
-
