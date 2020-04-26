@@ -10,10 +10,24 @@ from model_orchestrator.model_orchestrator import ModelOrchestrator
 
 logging.basicConfig(level=logging.INFO)
 
-queue_name = "s3-event-notification-queue"
-region_name = "us-east-1"
-namespace = "rqmp"
-queue_wait_time = 20
+
+namespace = os.environ["NAMESPACE"]
+queue_name = os.environ["QUEUE_NAME"]
+queue_wait_time = int(os.environ["QUEUE_WAIT_TIME"])
+
+
+# TODO: This won't be required if the Vault is injected as configmap to the container envar
+def aws_credentials_init():
+
+    with open("vault/secrets/aws", "r") as aws:
+        aws_secrets = aws.readlines()
+
+    for aws_secret in aws_secrets:
+        secret = aws_secret.strip()
+        os.environ[secret.split("=")[0]] = secret.split("=")[1]
+
+    return True
+
 
 logging.info(os.environ)
 
@@ -21,7 +35,6 @@ SQSStatus = namedtuple("QueueStatus", "messages_available messages_processed")
 
 
 class KubernetesParameters:
-
     _image_pull_policy = "Never"
     _restart_policy = "Never"
 
@@ -78,7 +91,7 @@ class KubernetesParameters:
 
 
 class SQSManager:
-    def __init__(self):
+    def __init__(self, region_name):
 
         logging.info(
             f"Initialising SQSManager instance with queue_name: {queue_name}, "
@@ -156,12 +169,17 @@ class SQSManager:
 
 
 if __name__ == "__main__":
+    is_aws_available = aws_credentials_init()
+    if is_aws_available:
+        region_name = os.environ["AWS_DEFAULT_REGION"]
+        while True:
+            # Poll SQS
+            sqs_queue_manager = SQSManager(region_name)
+            while True:
 
-    sqs_queue_manager = SQSManager()
+                status = sqs_queue_manager.process_message()
 
-    while True:
-
-        status = sqs_queue_manager.process_message()
-
-        if status.messages_processed is None or status.messages_processed == 0:
-            time.sleep(queue_wait_time)
+                if status.messages_processed is None or status.messages_processed == 0:
+                    time.sleep(queue_wait_time)
+    else:
+        raise Exception("AWS credentials missing. Unable to start application.")
