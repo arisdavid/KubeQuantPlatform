@@ -1,10 +1,10 @@
-## Kube Quant Platform
+## KubeQ Platform
 [![CircleCI](https://circleci.com/gh/arisdavid/KubeQuantPlatform/tree/master.svg?style=shield&circle-token=4497d0b6994553429ad830631fbde0e5762aab67)](https://circleci.com/gh/arisdavid/KubeQuantPlatform/tree/master)
 [![Python 3.7](https://img.shields.io/badge/python-3.7-blue.svg)](https://www.python.org/downloads/release/python-370/)
 <a href="https://github.com/psf/black"><img alt="Code style: black" src="https://img.shields.io/badge/code%20style-black-000000.svg"></a>
 
 ## Introduction
-Kube Quant Platform is an experimental model execution platform. 
+KubeQ (Kube Quant) Platform is an experimental model execution platform. 
 The platform is responsible for creating and orchestrating ephemeral pods with containerised quant models inside a Kubernetes cluster. 
  
 
