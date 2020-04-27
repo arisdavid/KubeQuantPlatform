@@ -1,4 +1,5 @@
 ## KubeQ Platform
+
 [![CircleCI](https://circleci.com/gh/arisdavid/KubeQuantPlatform/tree/master.svg?style=shield&circle-token=4497d0b6994553429ad830631fbde0e5762aab67)](https://circleci.com/gh/arisdavid/KubeQuantPlatform/tree/master)
 [![Python 3.7](https://img.shields.io/badge/python-3.7-blue.svg)](https://www.python.org/downloads/release/python-370/)
 <a href="https://github.com/psf/black"><img alt="Code style: black" src="https://img.shields.io/badge/code%20style-black-000000.svg"></a>
@@ -66,7 +67,6 @@ Ensure you're inside the Kubernetes environment as this is where the images will
 eval $(minikube docker-env)
 ```
 
-
 #### Docker Images (Sample Quant Models)
 
 Clone the the the repositories and build the corresponding Docker images inside the Kubernetes cluster:
@@ -101,6 +101,12 @@ python main.py mcs gbm 1000 200 0.2 0.18 365 250
 
 ## AWS Development and Testing (WIP)
 
+#### Helm 
+Helm is a tool for managing Kubernetes charts. Charts are packages of pre-configured Kubernetes resources.
+To install Helm, refer to the Helm install guide and ensure that the helm binary is in the PATH of your shell:
+
+https://helm.sh/docs/intro/install/
+
 #### Vault Configuration
 
 We are using vault to store secrets and inject them into the pods as when needed e.g. Cloud credential. 
@@ -111,7 +117,7 @@ Ensure the current context is set to namespace=<namespace_name> you're currently
 
 Install vault:
 ```
-helm install vault ./vault-helm --set='server.dev.enabled=true   
+helm install vault ./vault-helm --set='server.dev.enabled=true'   
 ```
 
 `Optional` - Create a port forward 8200:8200. The UI becomes accessible at host:8200:
@@ -154,11 +160,11 @@ vault write auth/kubernetes/config \
 ```
 
 ```
-vault write auth/kubernetes/role/myapp \
+vault write auth/kubernetes/role/batchqueuemanager \
     bound_service_account_names=<app_service_account> \
     bound_service_account_namespaces=<namespace> \
     policies=app \
-    ttl=1h
+    ttl=8h
  
 ```
 
@@ -177,20 +183,18 @@ Spin up AWS Resources through Terraform.
 ##### Terraform Plan 
 ##### Terraform Apply
 
-#### Helm 
-Helm is a tool for managing Kubernetes charts. Charts are packages of pre-configured Kubernetes resources.
-To install Helm, refer to the Helm install guide and ensure that the helm binary is in the PATH of your shell:
+##### Batch QueueManager
 
-https://helm.sh/docs/intro/install/
-
-
-#### Docker Images
-Follow the same steps above for building the models' docker images. 
-
-Build the Batch-Queue-Manager image from the root project of this repository:
+Build the Batch-Queue image from the root project of this repository:
 
 ```
 docker build -t batch-queue-manager:latest .
+```
+
+Install the Batch-Queue-Manager:
+
+```
+helm install --namespace=<namespace_name> batch-queue-manager ./charts --values ./charts/env/awsdev/values.yaml
 ```
 
 

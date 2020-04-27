@@ -35,7 +35,7 @@ podAnnotations:
       AWS_SECRET_ACCESS_KEY={{.Data.data.AWS_SECRET_ACCESS_KEY  }}
       AWS_DEFAULT_REGION={{.Data.data.AWS_DEFAULT_REGION }}
     {{- end }}
-  vault.hashicorp.com/role: "myapp"
+  vault.hashicorp.com/role: "batchqueuemanager"
 
 
 serviceAccount:
