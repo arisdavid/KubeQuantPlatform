@@ -2,7 +2,7 @@ import argparse
 import logging
 import uuid
 
-from model_orchestrator.model_orchestrator import ModelOrchestrator
+from modelorchestrator.model_orchestrator import ModelOrchestrator
 
 logging.basicConfig(level=logging.INFO)
 
