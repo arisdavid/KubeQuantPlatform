@@ -10,10 +10,10 @@ from modelorchestrator.model_orchestrator import ModelOrchestrator
 
 logging.basicConfig(level=logging.INFO)
 
-namespace = "kubeq"
-queue_wait_time = 10
-queue_name = "data-ingestion-queue"
-region_name = "us-east-1"
+namespace = os.getenv("NAMESPACE", "kubeq")
+queue_wait_time = int(os.getenv("QUEUE_WAIT_TIME", "10"))
+queue_name = os.getenv("QUEUE_NAME", "data-ingestion-queue")
+region_name = os.getenv("AWS_DEFAULT_REGION", "us-east-1")
 vacant_job_slot = 10
 max_queue_message_read = 10
 
