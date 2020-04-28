@@ -31,8 +31,8 @@ spec:
         - name: {{ .Chart.Name }}
           securityContext:
             {{- toYaml .Values.securityContext | nindent 12 }}
-          image: "{{ .Values.batchQueueManagerImage.repository }}:{{ .Values.batchQueueManagerImage.tag | default .Chart.AppVersion }}"
-          imagePullPolicy: {{ .Values.batchQueueManagerImage.pullPolicy }}
+          image: "{{ .Values.kubeqImage.repository }}:{{ .Values.kubeqImage.tag | default .Chart.AppVersion }}"
+          imagePullPolicy: {{ .Values.kubeqImage.pullPolicy }}
           envFrom:
            - configMapRef:
                 name: {{ .Values.configMap.name }}

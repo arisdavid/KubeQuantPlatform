@@ -1,13 +1,12 @@
-
 provider "aws" {
 
   region = "us-east-1"
-  
+
 }
 
 /* SQS Message Queue with Policy */
 resource "aws_sqs_queue" "sqs_queue_ingest" {
-  name = "s3-event-notification-queue"
+  name = "data-ingestion-queue"
 
   policy = <<POLICY
 {
@@ -17,9 +16,9 @@ resource "aws_sqs_queue" "sqs_queue_ingest" {
       "Effect": "Allow",
       "Principal": "*",
       "Action": "sqs:SendMessage",
-      "Resource": "arn:aws:sqs:*:*:s3-event-notification-queue",
+      "Resource": "arn:aws:sqs:*:*:data-ingestion-queue",
       "Condition": {
-        "ArnLike": { "aws:SourceArn": "${aws_s3_bucket.s3_bucket_ingest_gbm.arn}"}
+        "ArnLike": { "aws:SourceArn": "${aws_s3_bucket.s3_bucket_ingest_kmv.arn}"}
       }
     }
   ]
@@ -29,28 +28,19 @@ POLICY
 
 
 /* S3 Buckets */
-resource "aws_s3_bucket" "s3_bucket_ingest_gbm"{
-   bucket = "rqmp-ingest-gbm"
+resource "aws_s3_bucket" "s3_bucket_ingest_kmv"{
+   bucket = "kubeq-ingest-kmv"
    acl    = "private"
    tags = {
-      Name = "Ingest-GBM-Bucket"
+      Name = "Ingest-KMV-Bucket"
     }
 
   }
 
-  resource "aws_s3_bucket" "s3_bucket_ingest_kmv"{
-   bucket = "rqmp-ingest-kmv"
-   acl    = "private"
-
-   tags = {
-      Name = "Ingest-KMV-Bucket"
-    }
-}
-
 
 /* Notifications */
-resource "aws_s3_bucket_notification" "bucket_notification_gbm" {
-  bucket = aws_s3_bucket.s3_bucket_ingest_gbm.id
+resource "aws_s3_bucket_notification" "bucket_notification_kmv" {
+  bucket = aws_s3_bucket.s3_bucket_ingest_kmv.id
 
   queue {
     queue_arn     = aws_sqs_queue.sqs_queue_ingest.arn

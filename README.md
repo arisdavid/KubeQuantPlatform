@@ -115,9 +115,9 @@ Clone Vault-Helm repository - https://github.com/hashicorp/vault-k8s
 
 Ensure the current context is set to namespace=<namespace_name> you're currently working on. 
 
-Install vault:
+Install vault from vault's project root:
 ```
-helm install vault ./vault-helm --set='server.dev.enabled=true'   
+helm install vault . --set='server.dev.enabled=true'   
 ```
 
 `Optional` - Create a port forward 8200:8200. The UI becomes accessible at host:8200:
@@ -160,11 +160,11 @@ vault write auth/kubernetes/config \
 ```
 
 ```
-vault write auth/kubernetes/role/batchqueuemanager \
-    bound_service_account_names=<app_service_account> \
+vault write auth/kubernetes/role/kubequantqm \
+    bound_service_account_names=<service_account_name> \
     bound_service_account_namespaces=<namespace> \
     policies=app \
-    ttl=8h
+    ttl=768h
  
 ```
 
@@ -176,25 +176,37 @@ vault kv put secret/aws AWS_ACCESS_KEY_ID=<AWS_ACCESS_KEY_ID> \
 ```
 
 
-#### AWS Resources (TODO)
+#### AWS Resources
 
-Spin up AWS Resources through Terraform.
+Spin up AWS Resources using Terraform. Note this is still `WIP`.
+
+##### Terraform Init
+```
+terraform init
+```
 
 ##### Terraform Plan 
+```
+terraform plan
+``` 
+
 ##### Terraform Apply
+```
+terraform apply
+``` 
 
-##### Batch QueueManager
+##### KubeQuantQueueManager
 
-Build the Batch-Queue image from the root project of this repository:
+Build the kubequantqm image from the root project of this repository:
 
 ```
-docker build -t batch-queue-manager:latest .
+make build
 ```
 
-Install the Batch-Queue-Manager:
+Install kubequantqm
 
 ```
-helm install --namespace=<namespace_name> batch-queue-manager ./charts --values ./charts/env/awsdev/values.yaml
+make install
 ```
 
 

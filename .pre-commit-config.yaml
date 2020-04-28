@@ -22,3 +22,10 @@ repos:
     - id: flake8
       language_version: python3.7
       args: [--max-line-length=100,--extend-ignore=E203]
+
+  # GiTicket
+- repo:  https://github.com/milin/giticket
+  rev: 6f166c6
+  hooks:
+  - id:  giticket
+    args: ['--regex=PROJ-[0-9]', '--format={ticket} {commit_msg}']
