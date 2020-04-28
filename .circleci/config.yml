@@ -29,10 +29,37 @@ jobs:
           command: |
             . venv/bin/activate
             flake8 --exclude venv --count --select=E901,E999,F821,F822,F823 --show-source --statistics
-            
+
+  test:
+    executor: python3-executor
+    steps:
+      - checkout
+      - run:
+          name: Install dependencies
+          command: |
+            python3 -m venv venv
+            . venv/bin/activate
+            pip3 install coverage pytest
+      - run:
+          name: Unittest
+          command: |
+            . venv/bin/activate
+            coverage run -m pytest
+      - run:
+          name: Code coverage
+          command: |
+            . venv/bin/activate
+            coverage run -m pytest --junitxml=coverage/testsummary.xml
+      - store_test_results:
+          path: coverage
+      - store_artifacts:
+          path: coverage
+
 workflows:
   version: 2
-  code-quality:
+  code-quality-and-test:
     jobs:
       - syntax-checks
-
+      - test:
+          requires:
+            - syntax-checks
