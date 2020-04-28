@@ -1,24 +1,23 @@
-import logging
-import time
-import boto3
-import uuid
 import json
+import logging
 import os
-from modelorchestrator.model_orchestrator import ModelOrchestrator
-
+import time
+import uuid
 from collections import namedtuple
+
+import boto3
+from modelorchestrator.model_orchestrator import ModelOrchestrator
 
 logging.basicConfig(level=logging.INFO)
 
 namespace = "kubeq"
 queue_wait_time = 10
-queue_name = 'data-ingestion-queue'
-region_name = 'us-east-1'
+queue_name = "data-ingestion-queue"
+region_name = "us-east-1"
 vacant_job_slot = 10
 max_queue_message_read = 10
 
-SQSStatus = namedtuple("QueueStatus",
-                       "messages_processed")
+SQSStatus = namedtuple("QueueStatus", "messages_processed")
 
 
 # TODO: This won't be required if the Vault is injected as configmap to the container envar
@@ -103,8 +102,9 @@ def call_worker(message):
             bucket_name = message_body["Records"][0]["s3"]["bucket"]["name"]
 
             model_name = bucket_name.split("-")[-1]
-            params = K8sParameters(model_name)
+            k8_param_obj = K8sParameters(model_name)
 
+            params = k8_param_obj.make_parameters()
             # Call Model Manager
             kube_object = ModelOrchestrator(
                 namespace,
@@ -128,7 +128,6 @@ def call_worker(message):
 
 
 class KubeQuantQueueManager:
-
     def __init__(self):
         sqs = boto3.resource("sqs", region_name=region_name)
         self.queue = sqs.get_queue_by_name(QueueName=queue_name)
@@ -138,7 +137,7 @@ class KubeQuantQueueManager:
 
         self.queue.reload()
         num_messages = int(self.queue.attributes["ApproximateNumberOfMessages"])
-        logging.info(f'Number of messages in the queue: {num_messages}')
+        logging.info(f"Number of messages in the queue: {num_messages}")
 
         messages_to_read = min(vacant_job_slot, max_queue_message_read)
 
@@ -146,7 +145,8 @@ class KubeQuantQueueManager:
             # SQS does not guarantee the number of messages to be returned.
             # But it can't be more than MaxNumberOfMessages
             messages = self.queue.receive_messages(
-                MaxNumberOfMessages=messages_to_read, WaitTimeSeconds=queue_wait_time)
+                MaxNumberOfMessages=messages_to_read, WaitTimeSeconds=queue_wait_time
+            )
             logging.info(f"Received {len(messages)} messages to process.")
 
             messages_processed = 0
