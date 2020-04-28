@@ -1,16 +1,16 @@
 replicaCount: 1
 
 sqs:
-  ingestQueueName: s3-event-notification-queue
+  ingestQueueName: data-ingestion-queue
   queueWaitTime: 10
 
 s3:
-  gbmIngestBucketName: rqmp-ingest-gbm
-  kmvIngestBucketName: rqmp-ingest-kmv
+  gbmIngestBucketName: kubeq-ingest-gbm
+  kmvIngestBucketName: kubeq-ingest-kmv
 
 
 batchQueueManagerImage:
-  repository: batch-queue-manager
+  repository: kubequantqm
   pullPolicy: Never
 
 configMap:
