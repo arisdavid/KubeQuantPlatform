@@ -14,8 +14,8 @@ namespace = os.getenv("NAMESPACE", "kubeq")
 queue_wait_time = int(os.getenv("QUEUE_WAIT_TIME", "10"))
 queue_name = os.getenv("QUEUE_NAME", "data-ingestion-queue")
 region_name = os.getenv("AWS_DEFAULT_REGION", "us-east-1")
-vacant_job_slot = 10
-max_queue_message_read = 10
+vacant_job_slot = int(os.getenv("VACANT_JOB_SLOT", "5"))
+max_queue_message_read = int(os.getenv("MAX_QUEUE_MESSAGE_READ", "5"))
 
 SQSStatus = namedtuple("QueueStatus", "messages_processed")
 
