@@ -28,4 +28,4 @@ repos:
   rev: 6f166c6
   hooks:
   - id:  giticket
-    args: ['--regex=PROJ-[0-9]', '--format={ticket} {commit_msg}']
+
