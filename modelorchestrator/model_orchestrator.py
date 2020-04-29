@@ -67,18 +67,18 @@ class ModelOrchestrator:
             image_pull_policy=self.container_params["image_pull_policy"],
         )
 
-        # TODO: programmtically call the right model
         container.command = ["python3", "-u", "/main.py"]
         container.args = [str(args) for args in self.container_params["args"]]
+
+        # Inject AWS Credentials as into the container's env vars
         aws_access_key = client.V1EnvVar(
-            name="AWS_ACCESS_KEY_ID", value=os.get("AWS_ACCESS_KEY_ID")
+            name="AWS_ACCESS_KEY_ID", value=os.environ["AWS_ACCESS_KEY_ID"]
         )
         aws_secret_key = client.V1EnvVar(
-            name="AWS_SECRET_ACCESS_KEY", value=os.get("AWS_SECRET_ACCESS_KEY")
+            name="AWS_SECRET_ACCESS_KEY", value=os.environ["AWS_SECRET_ACCESS_KEY"]
         )
-        default_region = client.V1EnvVar(
-            name="AWS_SECRET_ACCESS_KEY", value="us-east-1"
-        )
+        default_region = client.V1EnvVar(name="AWS_REGION", value="us-east-1")
+
         container.env = [aws_access_key, aws_secret_key, default_region]
         container.image = self.container_params["image"]
 
