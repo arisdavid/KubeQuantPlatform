@@ -44,16 +44,17 @@ jobs:
           name: Unittest
           command: |
             . venv/bin/activate
-            coverage run -m pytest
+             coverage run -m pytest --junitxml=unit_test/testsummary.xml
+      - store_test_results:
+          path: unit_test
       - run:
           name: Code coverage
           command: |
             . venv/bin/activate
-            coverage run -m pytest --junitxml=coverage/testsummary.xml
-      - store_test_results:
-          path: coverage
+            coverage report --fail-under=0
+            coverage html -d code_coverage
       - store_artifacts:
-          path: coverage
+          path: code_coverage
 
 workflows:
   version: 2
