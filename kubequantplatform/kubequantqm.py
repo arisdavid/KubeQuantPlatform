@@ -41,11 +41,11 @@ class K8sParameters:
     _image_pull_policy = "Never"
     _restart_policy = "Never"
 
-    def __init__(self, model_name):
+    def __init__(self, model_name, input_bucket, output_bucket, key):
         self.model_name = model_name
 
         # args = [bucket_name, file_name]
-        args = [1000000, 900000, 500000, 0.18, 0.12]
+        args = [input_bucket, output_bucket, key]
 
         if model_name == "kmv":
             self.container_name = "credit-models"
@@ -99,10 +99,12 @@ def call_worker(message):
 
     if "Records" in message_body:
         if "s3" in message_body["Records"][0]:
-            bucket_name = message_body["Records"][0]["s3"]["bucket"]["name"]
+            input_bucket = message_body["Records"][0]["s3"]["bucket"]["name"]
+            key = message_body["Records"][0]["s3"]["object"]["key"]
 
-            model_name = bucket_name.split("-")[-1]
-            k8_param_obj = K8sParameters(model_name)
+            output_bucket = "kubeq-output-kmv"
+            model_name = input_bucket.split("-")[-1]
+            k8_param_obj = K8sParameters(model_name, input_bucket, output_bucket, key)
 
             params = k8_param_obj.make_parameters()
             # Call Model Manager
@@ -115,14 +117,6 @@ def call_worker(message):
 
             # kube_object.create_namespace()
             kube_object.launch_worker()
-
-            job_status = None
-            logging.info("Waiting for job to complete.")
-            while job_status is None:
-                job_status = kube_object.get_job_status()
-            logging.info("Job complete.")
-            kube_object.delete_old_jobs()
-            kube_object.delete_old_pods()
 
     return logging.info(f"Worker completed processing message ID: {message.message_id}")
 

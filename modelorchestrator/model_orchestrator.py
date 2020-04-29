@@ -1,4 +1,5 @@
 import logging
+import os
 
 from kubernetes import client, config
 
@@ -69,7 +70,16 @@ class ModelOrchestrator:
         # TODO: programmtically call the right model
         container.command = ["python3", "-u", "/main.py"]
         container.args = [str(args) for args in self.container_params["args"]]
-
+        aws_access_key = client.V1EnvVar(
+            name="AWS_ACCESS_KEY_ID", value=os.get("AWS_ACCESS_KEY_ID")
+        )
+        aws_secret_key = client.V1EnvVar(
+            name="AWS_SECRET_ACCESS_KEY", value=os.get("AWS_SECRET_ACCESS_KEY")
+        )
+        default_region = client.V1EnvVar(
+            name="AWS_SECRET_ACCESS_KEY", value="us-east-1"
+        )
+        container.env = [aws_access_key, aws_secret_key, default_region]
         container.image = self.container_params["image"]
 
         logging.info(f"Created container with image {self.container_params['image']}")
