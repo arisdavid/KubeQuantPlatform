@@ -18,21 +18,17 @@ spec:
       - name: localstack
         image: localstack/localstack:0.11.0
         ports:
-        # exposing dynamodb
-        - containerPort: 31001
         # exposing sqs
         - containerPort: 31000
         # exposing s3
-        - containerPort: 31002  
-        # exposing iam
-        - containerPort: 31003
+        - containerPort: 31002
         # expsosing the localstack ui
         - containerPort: 32000
         env:
             # with the SERVICES environment variable, you can tell LocalStack
             # what services to expose on what port
           - name: SERVICES
-            value: "sqs:31000,dynamodb:31001,s3:31002,iam:31003"
+            value: "sqs:31000,s3:31002"
           - name: PORT_WEB_UI
             value: "32000"
 ---
@@ -42,8 +38,6 @@ kind: Service
 metadata:
   name: localstack
 spec:
-  # selector tells Kubernetes what Deployment this Service
-  # belongs to
   selector:
     app: localstack
   ports:
@@ -51,11 +45,6 @@ spec:
     protocol: TCP
     name: ui
     nodePort: 32000
-
-  - port: 31001
-    protocol: TCP
-    name: dynamodb
-    nodePort: 31001
 
   - port: 31000
     protocol: TCP
@@ -67,10 +56,6 @@ spec:
     name: s3
     nodePort: 31002
 
-  - port: 31003
-    protocol: TCP
-    name: iam
-    nodePort: 31003
 
   type: NodePort
 

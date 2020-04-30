@@ -9,7 +9,10 @@ provider "aws" {
   skip_requesting_account_id  = true
 
   endpoints{
-    apigateway     = "http://localhost:4567"
+    sqs = "http://localhost:31000"
+    s3 = "http://localhost:31002"
+
+    /*apigateway     = "http://localhost:4567"
     cloudformation = "http://localhost:4581"
     cloudwatch     = "http://localhost:4582"
     dynamodb       = "http://localhost:4569"
@@ -28,7 +31,7 @@ provider "aws" {
     sqs            = "http://localhost:4576"
     ssm            = "http://localhost:4583"
     stepfunctions  = "http://localhost:4585"
-    sts            = "http://localhost:4592"
+    sts            = "http://localhost:4592"*/
   }
 
 }

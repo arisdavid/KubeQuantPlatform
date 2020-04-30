@@ -84,23 +84,6 @@ Clone the the the repositories and build the corresponding Docker images inside 
     ```
 
 
-#### Local execution
-
-Execute the command below from the RiskQuantModelPlatform project root:
-
-##### KMV Model
-```
-python main.py kmv 1000000 900000 500000 0.18 0.12
-```
-
-##### Monte Carlo Simulation of Geometric Brownian Motion Model
-
-```
-python main.py mcs gbm 1000 200 0.2 0.18 365 250
-```
-
-## AWS Development and Testing (WIP)
-
 #### Helm 
 Helm is a tool for managing Kubernetes charts. Charts are packages of pre-configured Kubernetes resources.
 To install Helm, refer to the Helm install guide and ensure that the helm binary is in the PATH of your shell:
@@ -195,7 +178,7 @@ terraform plan
 terraform apply
 ``` 
 
-##### KubeQuantQueueManager
+##### KubeQuantQM
 
 Build the kubequantqm image from the root project of this repository:
 
