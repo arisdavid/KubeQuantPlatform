@@ -82,8 +82,6 @@ class ModelOrchestrator:
         container.env = [aws_access_key, aws_secret_key, default_region]
         container.image = self.container_params["image"]
 
-        logging.info(f"Created container with image {self.container_params['image']}")
-
         return container
 
     def create_pod_template(self):
@@ -94,11 +92,32 @@ class ModelOrchestrator:
         pod_template.spec = client.V1PodSpec(
             containers=[self.create_container()], restart_policy="Never"
         )
-        logging.info(f"Created pod template with name {self.pod_params['name']}.")
 
         return pod_template
 
     def create_job(self):
+
+        """
+        apiVersion: v1
+        kind: Job
+        metadata:
+         name: job-name
+        spec:
+         template:
+          spec:
+           metadata:
+             name: pod-name
+           containers:
+            - image: image
+              name: image-name
+              env:
+                - name: name
+                  value: value
+            restartPolicy: Never
+         backOffLimit: 0
+
+        """
+
         job_metadata = client.V1ObjectMeta(
             name=f"{self.job_params['name']}", labels=self.job_params["labels"],
         )
