@@ -27,12 +27,22 @@ POLICY
 }
 
 
-/* S3 Buckets */
+/* S3 Ingest Buckets */
 resource "aws_s3_bucket" "s3_bucket_ingest_kmv"{
    bucket = "kubeq-ingest-kmv"
    acl    = "private"
    tags = {
       Name = "Ingest-KMV-Bucket"
+    }
+
+  }
+
+/* S3 Output Buckets */
+resource "aws_s3_bucket" "s3_bucket_output_kmv"{
+   bucket = "kubeq-output-kmv"
+   acl    = "private"
+   tags = {
+      Name = "Output-KMV-Bucket"
     }
 
   }
