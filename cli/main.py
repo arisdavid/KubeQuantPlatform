@@ -2,7 +2,7 @@ import argparse
 import logging
 import uuid
 
-from modelorchestrator.model_orchestrator import ModelOrchestrator
+from kubequantplatform.modelorchestrator.model_orchestrator import ModelOrchestrator
 
 logging.basicConfig(level=logging.INFO)
 

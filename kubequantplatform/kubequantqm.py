@@ -6,7 +6,7 @@ import uuid
 from collections import namedtuple
 
 import boto3
-from modelorchestrator.model_orchestrator import ModelOrchestrator
+from kubequantplatform.modelorchestrator.model_orchestrator import ModelOrchestrator
 
 logging.basicConfig(level=logging.INFO)
 
